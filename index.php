@@ -17,6 +17,29 @@
 
     <h1>Cupcake Fundraiser</h1>
 
+    <!--cupcake form-->
+    <form action="index.php" method="post">
+
+        <!--name-->
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" class="form-control" placeholder="Please enter your name."/>
+        </div>
+
+        <!--flavor checkboxes-->
+        <label>Cupcake Flavors:</label>
+
+
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" value="grasshopper" id="grasshopper"/>
+            <label for="grasshopper" class="form-check-label">The Grasshopper</label>
+        </div>
+
+        <!--submit button-->
+        <button type="submit" class="btn btn-primary">Order</button>
+
+    </form>
 
 
 </div>
