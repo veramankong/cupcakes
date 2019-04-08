@@ -1,3 +1,14 @@
+<!--
+
+Vera Mankongvanichkul
+4/7/2019
+http://vmankongvanichkul.greenriverdev.com/IT328/cupcakes/index.php
+
+Web page for cupcake fundraiser takes cupcake orders, prints errors or
+the successful order, then gives the total for the order.
+
+-->
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -69,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = [];
 
     //check for name
-    if (!isset($_POST['name'])) {
+    if (empty($_POST['name'])) {
         $errors[] = 'Please enter your name for the order.';
     }
 
@@ -88,18 +99,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     //process order
-    if (empty($errors)) {
-        //confirmation msg
+    if (empty($errors)) { //if order is successful
+        echo '<div class="container p-5 col-4 my-2 shadow-lg "><p>Thank you for your order '.$_POST['name'].'!<br>';
+        //list each flavor selected
+        echo 'Order Summary:<br><ul>';
+        foreach ($_POST['flavors'] as $flavor) {
+            echo "<li> $flavors[$flavor] </li>";
+        }
+        echo '</ul>';
+        //calculate order total
+        echo 'Order Total: $' . number_format((count($_POST['flavors']) * 3.50), 2) . '</p></div>';
+        exit();
 
     } else {
         //print errors
-        echo '<div class="container p-5 col-5 my-4 shadow-lg"><p>There were problems with your order:<br></p>';
+        echo '<div class="container p-5 col-4 my-2 shadow-lg"><p>There were problems with your order:<br></p>';
         foreach ($errors as $error) {
-            echo "- $error<br>";
+            echo "* $error<br>";
         }
         echo '<br><p>Please try again.</p></div>';
     }
-
 }
 
 ?>
