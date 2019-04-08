@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Cupcakes!</title>
+    <title>Cupcake Fundraiser Order Form</title>
 </head>
 <body>
 
-<div class="container p-5 col-5 mt-4 shadow-lg">
+<div class="container p-5 col-4 mt-4 shadow-lg ">
 
     <h1>Cupcake Fundraiser</h1>
 
@@ -23,29 +23,36 @@
         <!--name-->
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" id="name" class="form-control" placeholder="Please enter your name."/>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Please enter your name."
+                   value="<?php if(isset($_POST['name'])) echo $_POST['name']; ?>">
         </div>
 
         <!--flavor checkboxes-->
         <label>Cupcake Flavors:</label>
+
         <?php
 
         //create associative array of flavors
-        $flavors = [
-            'grasshopper' => 'The Grasshopper',
-            'maple' => 'Whiskey Maple Bacon',
-            'carrot' => 'Carrot Walnut',
-            'caramel' => 'Salted Caramel Cupcake',
-            'velvet' => 'Red Velvet',
-            'lemon' => 'Lemon Drop' 
-        ];
+        $flavors = array(
+            "grasshopper" => "The Grasshopper",
+            "maple" => "Whiskey Maple Bacon",
+            "carrot" => "Carrot Walnut",
+            "caramel" => "Salted Caramel Cupcake",
+            "velvet" => "Red Velvet",
+            "lemon" => "Lemon Drop"
+        );
         
         //create checkboxes for flavors
-        foreach ($flavors as $flavor => $description) {
-            echo '<div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" value=" . $flavor . " id=" . $flavor . "/>
-            <label for=" . $flavor . " class="form-check-label">'. $description . '</label>
-        </div>';
+
+
+        foreach($flavors as $name => $flavor) {
+            echo '<div class="form-group form-check"><input type="checkbox" name ="flavors[]" id ="'. $name. '" 
+                class="form-check-input" value="'. $name. '"';
+            if(isset($_POST['flavors']) && in_array($name, $_POST['flavors'])) {
+                echo ' checked';
+            }
+            echo '>';
+            echo '<label for="'. $name . '" class="form-check-label">'. $flavor . '</label></div>';
         }
         ?>
 
@@ -53,9 +60,49 @@
         <button type="submit" class="btn btn-primary">Order</button>
 
     </form>
-
-
 </div>
+
+<?php //php form validation
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $errors = [];
+
+    //check for name
+    if (!isset($_POST['name'])) {
+        $errors[] = 'Please enter your name for the order.';
+    }
+
+    //check for at least one flavor selected
+    if (!isset($_POST['flavors'])) {
+        $errors[] = 'Please select at least one flavor of cupcake.';
+    }
+
+    //check if selected flavors are valid
+    if (!isset($_POST['flavors'])){
+        foreach ($_POST['flavors'] as $value) {
+            if (!array_key_exists($value, $flavors)) {
+                $errors[] = "Sorry, $value does not exist.";
+            }
+        }
+    }
+
+    //process order
+    if (empty($errors)) {
+        //confirmation msg
+
+    } else {
+        //print errors
+        echo '<div class="container p-5 col-5 my-4 shadow-lg"><p>There were problems with your order:<br></p>';
+        foreach ($errors as $error) {
+            echo "- $error<br>";
+        }
+        echo '<br><p>Please try again.</p></div>';
+    }
+
+}
+
+?>
 
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
