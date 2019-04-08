@@ -28,13 +28,26 @@
 
         <!--flavor checkboxes-->
         <label>Cupcake Flavors:</label>
+        <?php
 
-
-
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" value="grasshopper" id="grasshopper"/>
-            <label for="grasshopper" class="form-check-label">The Grasshopper</label>
-        </div>
+        //create associative array of flavors
+        $flavors = [
+            'grasshopper' => 'The Grasshopper',
+            'maple' => 'Whiskey Maple Bacon',
+            'carrot' => 'Carrot Walnut',
+            'caramel' => 'Salted Caramel Cupcake',
+            'velvet' => 'Red Velvet',
+            'lemon' => 'Lemon Drop' 
+        ];
+        
+        //create checkboxes for flavors
+        foreach ($flavors as $flavor => $description) {
+            echo '<div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" value=" . $flavor . " id=" . $flavor . "/>
+            <label for=" . $flavor . " class="form-check-label">'. $description . '</label>
+        </div>';
+        }
+        ?>
 
         <!--submit button-->
         <button type="submit" class="btn btn-primary">Order</button>
